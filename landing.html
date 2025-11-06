@@ -1,54 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SortViz - Landing Page</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-950 text-white font-sans">
-  <div class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
-    <h1 class="text-5xl font-bold mb-4 gradient-text">Welcome to SortViz</h1>
-    <p class="text-lg text-gray-300 max-w-2xl mb-8">
-      SortViz is an interactive and visual educational tool that helps you understand how different sorting algorithms work.
-      Watch your chosen algorithm come to life as it sorts a randomized array using animated transitions.
-      Select from Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, or Quick Sort!
+
+<body class="bg-black text-white font-sans overflow-hidden">
+  <div class="starry-background"></div>
+
+  <div class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
+    <!-- Status Badge -->
+    <div class="mb-8">
+      <span
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900/50 border border-gray-800 backdrop-blur-sm">
+        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+        <span class="text-sm text-gray-300">Interactive Learning Tool</span>
+      </span>
+    </div>
+
+    <!-- Main Heading -->
+    <h1 class="text-6xl md:text-7xl font-light mb-6 heading-text">
+       <span class="gradient-italic"> SortViz.</span>
+    </h1>
+
+    <!-- Description -->
+    <p class="text-lg text-gray-400 max-w-2xl mb-10 leading-relaxed">
+      An interactive visualization tool with <span class="text-white font-medium">5+ algorithms</span> to explore,<br>
+      currently helping students understand <span class="text-white font-medium">sorting algorithms</span> through beautiful animations
     </p>
-    <a href="index.html">
-      <button class="bg-purple-600 hover:bg-purple-700 text-white text-lg px-6 py-3 rounded-full shadow-lg transition duration-300">
-        Start Visulaizing
-      </button>
-    </a>
+
+    <!-- Buttons -->
+    <div class="flex gap-4 flex-wrap justify-center">
+      <a href="index.html">
+        <button
+          class="px-6 py-3 rounded-full bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 text-white transition duration-300 backdrop-blur-sm flex items-center gap-2">
+          View Algorithms
+          <i class="fas fa-arrow-right text-sm"></i>
+        </button>
+      </a>
+      <a href="index.html">
+        <button
+          class="px-6 py-3 rounded-full bg-white hover:bg-gray-100 text-black font-medium transition duration-300">
+          Start Visualizing
+        </button>
+      </a>
+    </div>
   </div>
 
   <style>
-    .gradient-text {
-      background: linear-gradient(90deg, #8B5CF6, #EC4899);
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .starry-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+      z-index: 0;
+    }
+
+    .starry-background::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 60px 70px, white, transparent),
+        radial-gradient(1px 1px at 50px 50px, white, transparent),
+        radial-gradient(1px 1px at 130px 80px, white, transparent),
+        radial-gradient(2px 2px at 90px 10px, white, transparent),
+        radial-gradient(1px 1px at 200px 150px, white, transparent),
+        radial-gradient(1px 1px at 170px 120px, white, transparent),
+        radial-gradient(2px 2px at 250px 60px, white, transparent),
+        radial-gradient(1px 1px at 300px 100px, white, transparent),
+        radial-gradient(1px 1px at 350px 40px, white, transparent);
+      background-size: 400px 400px;
+      background-repeat: repeat;
+      animation: stars 200s linear infinite;
+      opacity: 0.5;
+    }
+
+    @keyframes stars {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-400px);
+      }
+    }
+
+    .heading-text {
+      background: linear-gradient(to right, #a8b3c1, #ffffff);
       -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       background-clip: text;
-      color: transparent;
     }
 
-    .gradient-background {
-      background: linear-gradient(90deg, #8B5CF6, #EC4899);
-    }
-
-    .gradient-border {
-      border-image-slice: 1;
-      border-image-source: linear-gradient(90deg, #8B5CF6, #EC4899);
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, #8B5CF6, #EC4899);
+    .gradient-italic {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      background: linear-gradient(to right, #c5d0dd, #ffffff);
       -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       background-clip: text;
-      color: transparent;
     }
-
- 
-
-
   </style>
 </body>
+
 </html>
