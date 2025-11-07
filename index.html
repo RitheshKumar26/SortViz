@@ -13,9 +13,40 @@
 </head>
 
 <body class="bg-black text-white font-sans overflow-hidden">
+  <!-- Preloader -->
+  <div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+    <div class="preloader-starry"></div>
+    <div class="preloader-content">
+      <!-- Animated Logo -->
+      <div class="preloader-logo-container">
+        <div class="logo-ring"></div>
+        <div class="logo-ring-2"></div>
+        <h1 class="preloader-logo gradient-italic">SortViz</h1>
+      </div>
+
+      <!-- Particle System -->
+      <div class="particles-container">
+        <div class="particle" style="--x: 20%; --y: 30%; --delay: 0s; --duration: 3s;"></div>
+        <div class="particle" style="--x: 80%; --y: 20%; --delay: 0.5s; --duration: 4s;"></div>
+        <div class="particle" style="--x: 50%; --y: 70%; --delay: 1s; --duration: 3.5s;"></div>
+        <div class="particle" style="--x: 10%; --y: 60%; --delay: 1.5s; --duration: 4.5s;"></div>
+        <div class="particle" style="--x: 90%; --y: 80%; --delay: 0.8s; --duration: 3.8s;"></div>
+        <div class="particle" style="--x: 40%; --y: 40%; --delay: 1.2s; --duration: 4.2s;"></div>
+      </div>
+
+      <!-- Loading Progress -->
+      <div class="loading-container">
+        <div class="loading-bar-bg">
+          <div class="loading-bar"></div>
+        </div>
+        <p class="loading-text">Loading Experience</p>
+      </div>
+    </div>
+  </div>
+
   <div class="starry-background"></div>
 
-  <div class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
+  <div id="mainContent" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
     <!-- Status Badge -->
     <div class="mb-8">
       <span
@@ -39,7 +70,6 @@
 
     <!-- Buttons -->
     <div class="flex gap-4 flex-wrap justify-center">
-
       <a href="/sorting.html">
         <button class="start-visualizing-btn">
           Start Visualizing
@@ -188,7 +218,293 @@
         top: 150%;
       }
     }
+
+    /* Preloader Styles */
+    #preloader {
+      transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+      z-index: 9999;
+    }
+
+    #preloader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Main Content */
+    #mainContent {
+      opacity: 0;
+      animation: fadeInContent 1s ease-out 2s forwards;
+    }
+
+    @keyframes fadeInContent {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .preloader-starry {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #1B2735 0%, #090A0F 100%);
+      z-index: 0;
+    }
+
+    .preloader-starry::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 60px 70px, white, transparent),
+        radial-gradient(1px 1px at 50px 50px, white, transparent),
+        radial-gradient(1px 1px at 130px 80px, white, transparent),
+        radial-gradient(2px 2px at 90px 10px, white, transparent),
+        radial-gradient(1px 1px at 200px 150px, white, transparent),
+        radial-gradient(1px 1px at 170px 120px, white, transparent),
+        radial-gradient(2px 2px at 250px 60px, white, transparent),
+        radial-gradient(1px 1px at 300px 100px, white, transparent),
+        radial-gradient(1px 1px at 350px 40px, white, transparent);
+      background-size: 400px 400px;
+      background-repeat: repeat;
+      animation: stars 200s linear infinite;
+      opacity: 0.7;
+    }
+
+    .preloader-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    /* Logo Animation */
+    .preloader-logo-container {
+      position: relative;
+      margin-bottom: 60px;
+    }
+
+    .preloader-logo {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 5rem;
+      background: linear-gradient(to right, #c5d0dd, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: logoGlow 2s ease-in-out infinite;
+      position: relative;
+      z-index: 3;
+    }
+
+    @keyframes logoGlow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 20px rgba(197, 208, 221, 0.5));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 40px rgba(197, 208, 221, 0.8));
+      }
+    }
+
+    /* Rotating Rings */
+    .logo-ring,
+    .logo-ring-2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: rgba(197, 208, 221, 0.6);
+      border-right-color: rgba(197, 208, 221, 0.3);
+    }
+
+    .logo-ring {
+      width: 200px;
+      height: 200px;
+      animation: rotateRing 3s linear infinite;
+    }
+
+    .logo-ring-2 {
+      width: 240px;
+      height: 240px;
+      animation: rotateRing 4s linear infinite reverse;
+      border-top-color: rgba(167, 139, 250, 0.6);
+      border-right-color: rgba(167, 139, 250, 0.3);
+    }
+
+    @keyframes rotateRing {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* Particle System */
+    .particles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 1) 0%, rgba(167, 139, 250, 0) 70%);
+      border-radius: 50%;
+      left: var(--x);
+      top: var(--y);
+      animation: floatParticle var(--duration) ease-in-out infinite;
+      animation-delay: var(--delay);
+      box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);
+    }
+
+    @keyframes floatParticle {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(calc(var(--x) * 0.5), calc(var(--y) * -0.5)) scale(1.5);
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(calc(var(--x) * 1), calc(var(--y) * -1)) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    /* Loading Bar */
+    .loading-container {
+      margin-top: 40px;
+    }
+
+    .loading-bar-bg {
+      width: 300px;
+      height: 4px;
+      background: rgba(55, 65, 81, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      margin: 0 auto;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .loading-bar {
+      height: 100%;
+      background: linear-gradient(90deg,
+          rgba(167, 139, 250, 0.8) 0%,
+          rgba(197, 208, 221, 1) 50%,
+          rgba(167, 139, 250, 0.8) 100%);
+      border-radius: 10px;
+      animation: loadingProgress 2s ease-in-out forwards;
+      box-shadow:
+        0 0 10px rgba(167, 139, 250, 0.6),
+        0 0 20px rgba(167, 139, 250, 0.4);
+      position: relative;
+    }
+
+    .loading-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.6) 50%,
+          transparent 100%);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes loadingProgress {
+      0% {
+        width: 0%;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: rgba(197, 208, 221, 0.8);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: textPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes textPulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
   </style>
+
+  <script>
+    // Hide preloader after page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        preloader.classList.add('fade-out');
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 800);
+      }, 2000); // Show preloader for at least 2 seconds
+    });
+  </script>
 </body>
 
 </html>
