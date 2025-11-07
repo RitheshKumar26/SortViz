@@ -22,6 +22,9 @@
         const helpModal = document.getElementById('helpModal');
         const closeHelpModal = document.getElementById('closeHelpModal');
         const gotItBtn = document.getElementById('gotItBtn');
+        const welcomeGuide = document.getElementById('welcomeGuide');
+        const startExploring = document.getElementById('startExploring');
+        const dontShowAgain = document.getElementById('dontShowAgain');
 
         // State
         let array = [];
@@ -218,6 +221,17 @@ end procedure`
             generateNewArray();
             updateAlgorithmInfo();
             setupEventListeners();
+            checkWelcomeGuide();
+        }
+
+        // Check if welcome guide should be shown
+        function checkWelcomeGuide() {
+            const hasSeenGuide = localStorage.getItem('sortVizWelcomeGuide');
+            if (!hasSeenGuide) {
+                setTimeout(() => {
+                    welcomeGuide.classList.remove('hidden');
+                }, 500);
+            }
         }
 
         // Event Listeners
@@ -227,6 +241,14 @@ end procedure`
             startSortBtn.addEventListener('click', toggleSorting);
             algorithmSelect.addEventListener('change', updateAlgorithmInfo);
             
+            // Welcome guide
+            startExploring.addEventListener('click', () => {
+                if (dontShowAgain.checked) {
+                    localStorage.setItem('sortVizWelcomeGuide', 'seen');
+                }
+                welcomeGuide.classList.add('hidden');
+            });
+
             // Help modal
             helpBtn.addEventListener('click', () => helpModal.classList.remove('hidden'));
             closeHelpModal.addEventListener('click', () => helpModal.classList.add('hidden'));
@@ -327,11 +349,8 @@ end procedure`
             resetCounters();
             sortingCompleted = false;
             startSortBtn.disabled = false;
-            startSortBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
-            startSortBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
             startSortBtn.innerHTML = '<i id="playIcon" class="fas fa-play mr-2"></i><span>Sort</span>';
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
+            updateButtonStates();
         }
 
         // Reset counters
@@ -361,16 +380,26 @@ end procedure`
             }
         }
 
+        // Update button states
+        function updateButtonStates() {
+            if (isSorting) {
+                generateArrayBtn.disabled = true;
+                generateArrayBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                generateArrayBtn.disabled = false;
+                generateArrayBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
         // Start sorting
         function startSorting() {
             if (isSorting) return;
             
             isSorting = true;
             sortingPaused = false;
-            startSortBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
-            startSortBtn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
+            updateButtonStates();
+            
+            startSortBtn.innerHTML = '<i id="pauseIcon" class="fas fa-pause mr-2"></i><span>Pause</span>';
             
             const algorithm = algorithmSelect.value;
             resetCounters();
@@ -398,15 +427,13 @@ end procedure`
         // Pause sorting
         function pauseSorting() {
             sortingPaused = true;
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
+            startSortBtn.innerHTML = '<i id="playIcon" class="fas fa-play mr-2"></i><span>Resume</span>';
         }
 
         // Resume sorting
         function resumeSorting() {
             sortingPaused = false;
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
+            startSortBtn.innerHTML = '<i id="pauseIcon" class="fas fa-pause mr-2"></i><span>Pause</span>';
         }
 
         // Finish sorting
@@ -414,13 +441,12 @@ end procedure`
             isSorting = false;
             sortingPaused = false;
             sortingCompleted = true;
+            updateButtonStates();
             
             const endTime = performance.now();
             timeEl.textContent = `${Math.round(endTime - startTime)}ms`;
             
-            startSortBtn.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
-            startSortBtn.classList.add('bg-green-600', 'hover:bg-green-700');
-            startSortBtn.innerHTML = '<i class="fas fa-redo mr-2"></i> New Array';
+            startSortBtn.innerHTML = '<i class="fas fa-redo mr-2"></i><span>Shuffle</span>';
             
             // Mark all boxes as sorted
             const boxes = visualization.querySelectorAll('.number-box');
