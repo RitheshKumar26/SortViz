@@ -25,6 +25,12 @@
         const welcomeGuide = document.getElementById('welcomeGuide');
         const startExploring = document.getElementById('startExploring');
         const dontShowAgain = document.getElementById('dontShowAgain');
+        const voiceToggle = document.getElementById('voiceToggle');
+
+        // Voice Assistant State
+        let voiceEnabled = false;
+        let speechSynthesis = window.speechSynthesis;
+        let currentUtterance = null;
 
         // State
         let array = [];
@@ -234,6 +240,52 @@ end procedure`
             }
         }
 
+        // Voice Assistant Functions
+        function toggleVoiceAssistant() {
+            voiceEnabled = !voiceEnabled;
+            
+            if (voiceEnabled) {
+                voiceToggle.classList.remove('text-gray-400');
+                voiceToggle.classList.add('text-purple-400');
+                speak('Voice assistant enabled. I will explain each step of the sorting algorithm.');
+            } else {
+                voiceToggle.classList.remove('text-purple-400');
+                voiceToggle.classList.add('text-gray-400');
+                stopSpeaking();
+            }
+        }
+
+        function speak(text) {
+            if (!voiceEnabled) return;
+            
+            // Stop any ongoing speech
+            stopSpeaking();
+            
+            currentUtterance = new SpeechSynthesisUtterance(text);
+            currentUtterance.rate = 1.0;
+            currentUtterance.pitch = 1.0;
+            currentUtterance.volume = 1.0;
+            
+            // Use a more natural voice if available
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => 
+                voice.name.includes('Google') || 
+                voice.name.includes('Microsoft') ||
+                voice.lang.startsWith('en')
+            );
+            if (preferredVoice) {
+                currentUtterance.voice = preferredVoice;
+            }
+            
+            speechSynthesis.speak(currentUtterance);
+        }
+
+        function stopSpeaking() {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+        }
+
         // Event Listeners
         function setupEventListeners() {
             arraySizeInput.addEventListener('input', updateArraySize);
@@ -248,6 +300,9 @@ end procedure`
                 }
                 welcomeGuide.classList.add('hidden');
             });
+
+            // Voice assistant toggle
+            voiceToggle.addEventListener('click', toggleVoiceAssistant);
 
             // Help modal
             helpBtn.addEventListener('click', () => helpModal.classList.remove('hidden'));
@@ -402,6 +457,16 @@ end procedure`
             startSortBtn.innerHTML = '<i id="pauseIcon" class="fas fa-pause mr-2"></i><span>Pause</span>';
             
             const algorithm = algorithmSelect.value;
+            const algoNames = {
+                'bubble': 'Bubble Sort',
+                'selection': 'Selection Sort',
+                'insertion': 'Insertion Sort',
+                'merge': 'Merge Sort',
+                'quick': 'Quick Sort'
+            };
+            
+            speak(`Starting ${algoNames[algorithm]}. Let's visualize how this algorithm sorts the array.`);
+            
             resetCounters();
             startTime = performance.now();
             
@@ -444,7 +509,10 @@ end procedure`
             updateButtonStates();
             
             const endTime = performance.now();
-            timeEl.textContent = `${Math.round(endTime - startTime)}ms`;
+            const timeTaken = Math.round(endTime - startTime);
+            timeEl.textContent = `${timeTaken}ms`;
+            
+            speak(`Sorting complete! The array is now fully sorted. It took ${comparisons} comparisons and ${swaps} swaps in ${timeTaken} milliseconds.`);
             
             startSortBtn.innerHTML = '<i class="fas fa-redo mr-2"></i><span>Shuffle</span>';
             
